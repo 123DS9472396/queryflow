@@ -74,6 +74,33 @@ jobs:
         if: success()
         run: echo "✅ Batch ETL complete — Data Lake artifact saved."
 
+  # ── Stage 2.5: dbt Medallion Architecture ──────────────────────────────────
+  dbt_medallion_models:
+    name: "Stage 2.5 — dbt Medallion Models (Silver → Gold)"
+    runs-on: ubuntu-latest
+    needs: batch_etl
+    env:
+      CH_HOST:              ${{ secrets.CH_HOST }}
+      CH_PASSWORD:          ${{ secrets.CH_PASSWORD }}
+      CH_USER:              default
+      CH_DATABASE:          nyc_taxi
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dbt and ClickHouse adapter
+        run: pip install dbt-core dbt-clickhouse
+
+      - name: Run dbt models (Bronze → Silver → Gold)
+        run: dbt run --project-dir dbt --profiles-dir dbt
+        
+      - name: Run dbt tests
+        run: dbt test --project-dir dbt --profiles-dir dbt
+
   # ── Stage 3: Redis Streams Health Check ───────────────────────────────────
   redis_stream_check:
     name: "Stage 3 — Redis Streams Health Check"
@@ -112,7 +139,7 @@ run_producer(num_events=10, delay_ms=100)
   pipeline_report:
     name: "Stage 4 — Pipeline Summary"
     runs-on: ubuntu-latest
-    needs: [data_quality_check, batch_etl, redis_stream_check]
+    needs: [data_quality_check, batch_etl, dbt_medallion_models, redis_stream_check]
     if: always()
     steps:
       - name: Print pipeline summary
@@ -123,5 +150,6 @@ run_producer(num_events=10, delay_ms=100)
           echo "========================================"
           echo "Stage 1 — Data Quality:      ${{ needs.data_quality_check.result }}"
           echo "Stage 2 — Batch ETL (R2):    ${{ needs.batch_etl.result }}"
+          echo "Stage 2.5 — dbt Models:      ${{ needs.dbt_medallion_models.result }}"
           echo "Stage 3 — Redis Streams:     ${{ needs.redis_stream_check.result }}"
           echo "========================================"

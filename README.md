@@ -12,14 +12,9 @@ This repository models the entire lifecycle of a Top 1% Data Engineering pipelin
 
 ```mermaid
 graph LR
-    subgraph Infrastructure_Terraform
-        T(Terraform IaC) -. provisions .-> AWS[AWS MSK & S3]
-        T -. provisions .-> CH[(ClickHouse Cloud)]
-    end
-
     subgraph Ingestion_Layer
-        A[Fivetran] --> S3[AWS S3 Datalake]
-        A --> B(Kafka Stream)
+        A(Mock NYC Taxi Generator) --> S3[GitHub Actions Data Lake]
+        A --> B(Upstash Redis Streams)
     end
     
     subgraph Transformation_Medallion
@@ -31,9 +26,8 @@ graph LR
     end
     
     subgraph Orchestration_CICD
-        O((Apache Airflow)) -.- A
-        O -.- C
-        GH(GitHub Actions) -. tests & deploys .-> O
+        GH(GitHub Actions Cron) -. nightly orchestrates .-> S3
+        GH -. triggers .-> Transformation_Medallion
     end
     
     subgraph Application
@@ -43,16 +37,12 @@ graph LR
     end
 ```
 
-### 1. Cloud Infrastructure (Terraform)
-- **`infra/main.tf`**: Provisions AWS MSK for Kafka streaming, S3 for the Data Lake, and ClickHouse Cloud using Infrastructure as Code (IaC).
+### 1. CI/CD & Orchestration (GitHub Actions)
+- **GitHub Actions** (`.github/workflows/nightly-pipeline.yml`): Continuous Integration pipeline and full Nightly Orchestrator replacing Airflow. Runs data quality tests, Pandas ETL, and dbt models automatically every night.
 
-### 2. CI/CD & Orchestration (GitHub Actions & Airflow)
-- **GitHub Actions** (`.github/workflows/ci-cd.yml`): Continuous Integration pipeline running Python linting, tests, and deployment.
-- **Apache Airflow** (`dags/`): Automated DAGs coordinating Fivetran syncs and dbt builds.
-
-### 3. Data Engineering (Kafka, Pandas, dbt, Great Expectations)
-- **Streaming & Batch**: `scripts/kafka_producer.py` and `scripts/batch_etl.py` ingest data in real-time and via Pandas batch processes.
-- **dbt (Data Build Tool)** (`dbt/`): ELT Medallion Architecture mapping raw (Bronze) to clean (Silver) to aggregated (Gold).
+### 2. Data Engineering (Redis, Pandas, dbt, Data Lake)
+- **Streaming & Batch**: `scripts/stream_producer.py` streams real-time events to **Upstash Redis Streams**. `scripts/batch_etl.py` runs Pandas batch processes and saves files to a **GitHub Actions Artifact Data Lake**.
+- **dbt (Data Build Tool)** (`dbt/`): ELT Medallion Architecture mapping raw (Bronze) to clean (Silver) to aggregated (Gold). Runs natively against ClickHouse Cloud.
 - **Data Observability**: `tests/data_quality.py` implements *Great Expectations* validation logic, preventing bad data from hitting the Gold layer.
 
 ### 4. AI & Application Layer
