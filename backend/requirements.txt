@@ -1,0 +1,26 @@
+fastapi
+uvicorn[standard]
+
+# ClickHouse Cloud client
+clickhouse-connect
+
+# LangChain core stack (unpinned so pip grabs the latest mutually compatible versions instantly)
+langchain
+langchain-groq
+langchain-community
+langchain-core
+
+# LangGraph — state machine orchestration
+langgraph
+
+# MCP — Model Context Protocol server
+mcp==1.27.2
+
+# FastAPI + SSE
+python-dotenv==1.2.2
+sse-starlette==3.4.4
+pydantic
+httpx
+kafka-python==2.0.2
+pandas
+boto3
