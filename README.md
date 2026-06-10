@@ -11,6 +11,17 @@ Users can ask plain English questions about millions of rows of NYC Taxi data. T
 
 ---
 
+## 🌟 Unique Selling Propositions (What makes this Top 1%)
+
+Most portfolio projects are simple CRUD apps connected to a static database. **QueryFlow is a complete, self-healing cloud data ecosystem.**
+
+1. **Self-Healing AI (LangGraph State Machine):** Instead of crashing when bad SQL is generated, the agent catches ClickHouse database errors, feeds them back into the LLM, and *auto-corrects its own code* before the user ever sees it.
+2. **Serverless Real-Time Streaming & Orchestration:** Features a live Python streaming script pumping real-time events into **Upstash Redis Streams**, combined with a **GitHub Actions Nightly Cron Pipeline** that extracts, cleanses, tests, and transforms batch data completely serverless.
+3. **SSE Token Streaming Architecture:** High-performance FastAPI backend streams the AI's thoughts, SQL queries, and answers to the frontend *word-by-word* in real-time, matching ChatGPT's premium UX.
+4. **Data-Driven Visualization Algorithm:** The React frontend automatically analyzes the shape of the ClickHouse result set and intelligently selects the best chart type (Area, Donut, Grouped Bar) to render.
+
+---
+
 ## 🏗️ Enterprise Architecture 
 
 This repository models the entire lifecycle of a Top 1% Data Engineering pipeline.
@@ -50,7 +61,7 @@ graph LR
 - **dbt (Data Build Tool)** (`dbt/`): ELT Medallion Architecture mapping raw (Bronze) to clean (Silver) to aggregated (Gold). Runs natively against ClickHouse Cloud.
 - **Data Observability**: `tests/data_quality.py` implements *Great Expectations* validation logic, preventing bad data from hitting the Gold layer.
 
-### 4. AI & Application Layer
+### 3. AI & Application Layer
 - **LangGraph State Machine**: A cyclical text-to-SQL agent that catches ClickHouse errors and *auto-corrects* itself.
 - **React Frontend**: A stunning, dark-mode BI interface deployed on Vercel.
 
