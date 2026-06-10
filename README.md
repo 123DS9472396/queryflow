@@ -1,5 +1,10 @@
 # QueryFlow: Top 1% Enterprise Data Architecture 🚀
 
+<div align="center">
+  <img src="assets/dashboard1.png" width="48%" />
+  <img src="assets/dashboard2.png" width="48%" />
+</div>
+
 **QueryFlow** is an enterprise-grade Conversational Analytics platform and a complete demonstration of the modern data stack (Terraform → Fivetran → Kafka → Airflow → dbt → Great Expectations → ClickHouse → LangGraph). 
 
 Users can ask plain English questions about millions of rows of NYC Taxi data. The LangGraph AI agent writes ClickHouse SQL, auto-corrects itself, and renders a stunning Power BI / Domo-style React dashboard.
