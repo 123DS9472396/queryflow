@@ -13,7 +13,7 @@ Users can ask plain English questions about millions of rows of NYC Taxi data. T
 
 ## 🌟 Key Architectural Highlights
 
-Most portfolio projects are simple CRUD apps connected to a static database. **QueryFlow is a complete, self-healing cloud data ecosystem.**
+**QueryFlow is a complete, self-healing cloud data ecosystem.**
 
 1. **Self-Healing AI (LangGraph State Machine):** Instead of crashing when bad SQL is generated, the agent catches ClickHouse database errors, feeds them back into the LLM, and *auto-corrects its own code* before the user ever sees it.
 2. **Serverless Real-Time Streaming & Orchestration:** Features a live Python streaming script pumping real-time events into **Upstash Redis Streams**, combined with a **GitHub Actions Nightly Cron Pipeline** that extracts, cleanses, tests, and transforms batch data completely serverless.
