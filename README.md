@@ -1,4 +1,4 @@
-# QueryFlow: Top 1% Enterprise Data Architecture 🚀
+# QueryFlow: Enterprise Data Architecture 🚀
 
 <div align="center">
   <img src="assets/dashboard1.png" width="48%" />
@@ -11,7 +11,7 @@ Users can ask plain English questions about millions of rows of NYC Taxi data. T
 
 ---
 
-## 🌟 Unique Selling Propositions (What makes this Top 1%)
+## 🌟 Key Architectural Highlights
 
 Most portfolio projects are simple CRUD apps connected to a static database. **QueryFlow is a complete, self-healing cloud data ecosystem.**
 
@@ -24,7 +24,7 @@ Most portfolio projects are simple CRUD apps connected to a static database. **Q
 
 ## 🏗️ Enterprise Architecture 
 
-This repository models the entire lifecycle of a Top 1% Data Engineering pipeline.
+This repository models the entire lifecycle of a Enterprise Data Engineering pipeline.
 
 ```mermaid
 graph LR
